@@ -21,11 +21,12 @@ with open('style.css') as f:
 # Main Content Header
 st.header("FTSC ChatBot")
 
+#trying to reformat the input text as a query to feed into the model
 def get_text():
         input_text = st.text_input("You: ", key="input")
         return input_text 
 
-
+#implementing spinner to give the user indication of loading contents
 with st.spinner('Loading, Please wait a moment...'):
     time.sleep(1)
     
@@ -49,7 +50,7 @@ with st.spinner('Loading, Please wait a moment...'):
         #Putting the image at the middle row
         with col2:
             st.image(
-                "resource/logo.png",
+                "logo.png",
                 use_column_width="auto",
             )
 
@@ -114,6 +115,7 @@ with st.spinner('Loading, Please wait a moment...'):
             query = model.make_query(user_input, 'context', topk) # fetches context from vector db and reformats it
             answer = model.generate_answer(query) # generate answer
             
+            #appending the chat history into their specific dictionaries
             if user_input:
                 st.session_state.past.append(user_input)
                 st.session_state.generated.append(answer)
