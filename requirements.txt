@@ -75,7 +75,6 @@ scipy==1.10.1
 sentence-transformers==2.2.2
 sentencepiece==0.1.99
 six==1.16.0
-scikit-learn==0.0.post1
 smmap==5.0.0
 stack-data==0.6.1
 streamlit==1.22.0
