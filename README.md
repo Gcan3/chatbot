@@ -1,2 +1,2 @@
-# chatbot
-Streamlit and chatbot model connection
+# FTSC CHATBOT
+Run streamchat.py after downloading everything except the README.md
