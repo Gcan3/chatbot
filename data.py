@@ -1,6 +1,7 @@
 import pinecone
 import torch
 import pandas as pd
+import streamlit as st
 
 from sentence_transformers import SentenceTransformer
 from transformers import AutoTokenizer, T5ForConditionalGeneration
@@ -55,6 +56,7 @@ class VectorEmbedding:
         print(self.index.describe_index_stats())
 
 class Model:
+    @st.cache_resource
     def __init__(self, 
                  model_checkpoint, 
                  embedder,
@@ -95,7 +97,8 @@ class Model:
                                       max_length = max_length,)
         answer = self.tokenizer.batch_decode(ids, skip_special_tokens = True, clean_up_tokenization_spaces = False)[0]
         return answer
-    
+
+@st.cache_resource
 def init_vector_db(api_key, environ, index_name, dims, metric):
     return VectorDB(api_key, environ).create_index(index_name, dims, metric)
 
