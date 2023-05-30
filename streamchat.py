@@ -108,13 +108,12 @@ with main:
     
     # ignoring streamlit error using try-except syntax
     try:
-        model = Model('google/flan-t5-large',
+        if user_input:
+            model = Model('google/flan-t5-large',
                     embedder,
                     index)
-        query = model.make_query(user_input, 'context', topk) # fetches context from vector db and reformats it
-        answer = model.generate_answer(query) # generate answer
-        
-        if user_input:
+            query = model.make_query(user_input, 'context', topk) # fetches context from vector db and reformats it
+            answer = model.generate_answer(query) # generate answer
             st.session_state.past.append(user_input)
             st.session_state.generated.append(answer)
     except:
