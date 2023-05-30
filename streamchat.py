@@ -49,7 +49,7 @@ with st.sidebar:
     #Putting the image at the middle row
     with col2:
         st.image(
-            "logo.png",
+            "resource/logo.png",
             use_column_width="auto",
         )
 
@@ -106,20 +106,21 @@ if 'past' not in st.session_state:
 with main:
     user_input = get_text()
     
-    # ignoring streamlit error using try-except syntax
-    try:
-        if user_input:
-            model = Model('google/flan-t5-large',
-                    embedder,
-                    index)
-            query = model.make_query(user_input, 'context', topk) # fetches context from vector db and reformats it
-            answer = model.generate_answer(query) # generate answer
-            st.session_state.past.append(user_input)
-            st.session_state.generated.append(answer)
-    except:
-        #error message before beginning
-        st.error("Please enter the CSV file to activate our chat bot")
-        pass
+    # # ignoring streamlit error using try-except syntax
+    # try:
+    if user_input:
+        model = Model('google/flan-t5-large',
+                embedder,
+                index)
+        query = model.make_query(user_input, 'context', topk) # fetches context from vector db and reformats it
+        print(query)
+        answer = model.generate_answer(query) # generate answer
+    st.session_state.past.append(user_input)
+    st.session_state.generated.append(answer)
+    # except:
+    #     #error message before beginning
+    #     st.error("Please enter the CSV file to activate our chat bot")
+    #     pass
         
         
     #displaying the generated output by the model IF there is an output
