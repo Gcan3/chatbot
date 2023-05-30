@@ -6,12 +6,16 @@ from data import init_vector_db, embed_vectors, Model, API_KEY, ENVIRONMENT
 from streamlit_chat import message
 from io import StringIO
 
+db_initialized = False
+
 # Initialize vector database
-index = init_vector_db(API_KEY,
-                           ENVIRONMENT,
-                           'course-test-index',
-                           768,
-                           metric = 'dotproduct')
+if db_initialized == False:
+    index = init_vector_db(API_KEY,
+                            ENVIRONMENT,
+                            'course-test-index',
+                            768,
+                            metric = 'dotproduct')
+    db_initialized = True
 
 # Connecting with CSS
 with open('style.css') as f:
