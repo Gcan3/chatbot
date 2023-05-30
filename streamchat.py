@@ -1,9 +1,17 @@
 # Importing library
 import streamlit as st
-import data
+import pandas as pd
 
+from data import init_vector_db, embed_vectors, Model, API_KEY, ENVIRONMENT
 from streamlit_chat import message
 from io import StringIO
+
+# Initialize vector database
+index = init_vector_db(API_KEY,
+                           ENVIRONMENT,
+                           'course-test-index',
+                           768,
+                           metric = 'dotproduct')
 
 # Connecting with CSS
 with open('style.css') as f:
@@ -64,6 +72,11 @@ with sideUtil:
 
         # Can be used wherever a "file-like" object is accepted:
         dataframe = pd.read_csv(uploaded_file)
+        embedder = embed_vectors(dataframe, 
+                                 'context',
+                                 'sentence-transformers/msmarco-distilbert-base-tas-b,
+                                 index,
+                                 batch_size = 5)
         st.write(dataframe)
 
 
@@ -73,13 +86,17 @@ def get_text():
 
 #Main COntent
 with main:
+    model = Model('google/flan-t5-large',
+                  embedder,
+                  index)
     user_input = get_text()
-    
+   
+    query = model.make_query(user_input, 'context', top_k = 3) # fetches context from vector db and reformats it
+    answer = model.generate_answer(query) # generate answer
+        
     if user_input:
-        #trying to attach it to the main class
-        output = data.main
         st.session_state.past.append(user_input)
-        st.session_state.generated.append(output)
+        st.session_state.generated.append(answer)
         
 #displaying the generated output by the model IF there is an output
 if st.session_state['generated']:
