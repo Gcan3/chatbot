@@ -45,7 +45,7 @@ with st.sidebar:
     #Putting the image at the middle row
     with col2:
         st.image(
-            "resource/logo.png",
+            "logo.png",
             use_column_width="auto",
         )
 
