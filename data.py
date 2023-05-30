@@ -56,7 +56,7 @@ class VectorEmbedding:
         print(self.index.describe_index_stats())
 
 class Model:
-    @st.cache_resource
+    
     def __init__(self, 
                  model_checkpoint, 
                  embedder,
@@ -98,7 +98,7 @@ class Model:
         answer = self.tokenizer.batch_decode(ids, skip_special_tokens = True, clean_up_tokenization_spaces = False)[0]
         return answer
 
-@st.cache_resource
+
 def init_vector_db(api_key, environ, index_name, dims, metric):
     return VectorDB(api_key, environ).create_index(index_name, dims, metric)
 
@@ -126,7 +126,7 @@ def main():
     
     query = model.make_query(input('Query: '), 'context', top_k = 3)
     answer = model.generate_answer(query)
-    
+
     return query, answer
 
 if __name__ == '__main__':
